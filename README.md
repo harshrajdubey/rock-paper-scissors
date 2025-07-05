@@ -40,6 +40,21 @@ bun run dev
 
 Open your browser and go to `http://localhost:5173` (or the port shown in your terminal).
 
+## Deployment
+
+The app is deployed at: [https://auto-rock-paper-scissors.netlify.app/](https://auto-rock-paper-scissors.netlify.app/)
+
+## Docker
+
+You can run this app in a Docker container:
+
+```bash
+docker build -t rock-paper-scissors .
+docker run -p 8080:80 rock-paper-scissors
+```
+
+Then open your browser at [http://localhost:8080](http://localhost:8080)
+
 ## Project Structure
 
 - `src/components/RockPaperScissorsGame.tsx` — Main game component
