@@ -158,6 +158,10 @@ const RockPaperScissorsGame = () => {
       obj.x += obj.vx;
       obj.y += obj.vy;
 
+      // Add a small random jitter to velocity every frame to break symmetry
+      obj.vx += (Math.random() - 0.5) * 0.05;
+      obj.vy += (Math.random() - 0.5) * 0.05;
+
       // Bounce off walls
       if (obj.x <= obj.size / 2 || obj.x >= GAME_WIDTH - obj.size / 2) {
         obj.vx *= -1;
@@ -226,7 +230,7 @@ const RockPaperScissorsGame = () => {
               obj2.vy += impulse * ny;
 
               // Add some randomness to prevent objects getting stuck
-              const randomFactor = 0.2;
+              const randomFactor = 0.5; // increased randomness
               obj1.vx += (Math.random() - 0.5) * randomFactor;
               obj1.vy += (Math.random() - 0.5) * randomFactor;
               obj2.vx += (Math.random() - 0.5) * randomFactor;
@@ -331,6 +335,11 @@ const RockPaperScissorsGame = () => {
   };
 
   const handleCountChange = (type: "rock" | "paper" | "scissors", value: string) => {
+    // Allow empty string for controlled input, but only update state if valid
+    if (value === "") {
+      setStartingCounts((prev) => ({ ...prev, [type]: "" as any }));
+      return;
+    }
     const numValue = Math.max(1, Math.min(100, parseInt(value) || 1));
     setStartingCounts((prev) => ({ ...prev, [type]: numValue }));
   };
@@ -386,7 +395,7 @@ const RockPaperScissorsGame = () => {
             type='number'
             min='1'
             max='100'
-            value={startingCounts.rock}
+            value={startingCounts.rock || ""}
             onChange={(e) => handleCountChange("rock", e.target.value)}
             disabled={isRunning}
             className='w-16 px-2 py-1 border border-gray-300 rounded text-center disabled:bg-gray-100'
@@ -399,7 +408,7 @@ const RockPaperScissorsGame = () => {
             type='number'
             min='1'
             max='100'
-            value={startingCounts.paper}
+            value={startingCounts.paper || ""}
             onChange={(e) => handleCountChange("paper", e.target.value)}
             disabled={isRunning}
             className='w-16 px-2 py-1 border border-gray-300 rounded text-center disabled:bg-gray-100'
@@ -412,7 +421,7 @@ const RockPaperScissorsGame = () => {
             type='number'
             min='1'
             max='100'
-            value={startingCounts.scissors}
+            value={startingCounts.scissors || ""}
             onChange={(e) => handleCountChange("scissors", e.target.value)}
             disabled={isRunning}
             className='w-16 px-2 py-1 border border-gray-300 rounded text-center disabled:bg-gray-100'
